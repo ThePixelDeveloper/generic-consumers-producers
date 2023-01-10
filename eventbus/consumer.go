@@ -7,15 +7,14 @@ type Consumer[T Message] struct {
 	handlers map[string]HandlerFunc[T]
 }
 
-type HandlerFunc[T Message] func(ctx context.Context, event T) error
+type HandlerFunc[T Message] func(ctx context.Context, event T)
 
-func (c *Consumer[T]) On(e T, h HandlerFunc[T]) error {
+func (c *Consumer[T]) On(e T, h HandlerFunc[T]) {
 	if c.handlers == nil {
 		c.handlers = make(map[string]HandlerFunc[T])
 	}
 
 	c.handlers[e.Topic()] = h
-	return nil
 }
 
 func (c *Consumer[T]) Listen() {

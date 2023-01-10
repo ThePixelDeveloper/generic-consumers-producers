@@ -4,11 +4,10 @@ import (
 	"context"
 )
 
-type Producer[T Message] struct {
+type Producer struct {
 	Queue Memory
 }
 
-func (e *Producer[T]) Emit(ctx context.Context, event T) error {
+func (e *Producer) Emit(ctx context.Context, event Message) {
 	go e.Queue.Send(ctx, event)
-	return nil
 }

@@ -12,9 +12,8 @@ type Memory struct {
 	Messages chan Message
 }
 
-func (m Memory) Send(ctx context.Context, message Message) error {
+func (m Memory) Send(ctx context.Context, message Message) {
 	m.Messages <- message
-	return nil
 }
 
 func (m Memory) Receive(ctx context.Context) <-chan Message {
