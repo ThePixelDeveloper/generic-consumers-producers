@@ -27,12 +27,14 @@ func main() {
 	// Potentially an idea on how we'd define a generic consumer
 	userCreatedConsumer := eventbus.Consumer[events.UserCreated]{Queue: queue}
 
-	// The benefit over the current implementation is that we can remove the common boilerplate of
-	// event.(events.UserCreated) and just use the generic type
-	userCreatedConsumer.On(events.UserCreated{}, func(ctx context.Context, event events.UserCreated) {
+	// The benefit over the current implementation is that we can
+	// 1. Remove the common boilerplate of event.(events.UserCreated) and just use the generic type.
+	// 2. Remove the requirement for the first argument, since we know we're going to handle one event type.
+	userCreatedConsumer.Handle(func(ctx context.Context, event events.UserCreated) {
 		fmt.Printf("User created: %+v", event)
 		wg.Done()
 	})
+
 	userCreatedConsumer.Listen()
 
 	wg.Wait()
